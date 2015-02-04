@@ -10,6 +10,6 @@
 
 
 extern void move(void);
-extern int mv_chk(map* x);
+extern int mv_chk(mp* x);
 
 #endif 

@@ -1,5 +1,6 @@
 #include "s_sort.h"
-//#include "move.h"
+#include "shinnenn.h"
+#include "move.h"
 
 
 //＊状況に応じて型を変更する
@@ -20,7 +21,12 @@ void s_sort(tmp* a, int left, int right)
  * left  : ソートするデータの開始位置
  * right : ソートするデータの終了位置
  */
+
+ 
 {
+
+
+
     if (left < right) {
         int i = left, j = right;
         int temp,temp2, pivot = med3(a->sortcnt[i], a->sortcnt[i + (j - i) / 2], a->sortcnt[j]); /* (i+j)/2ではオーバーフローしてしまう */

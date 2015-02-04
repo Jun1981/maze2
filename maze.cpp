@@ -10,7 +10,7 @@
 #define	FileExtention	".map"			// マップファイルの拡張子
 #define	ArraySizeIncrement	(5)		// 自動拡張配列の拡張サイズ
 #define	PosUndefined	(-1)			// 位置情報が未確定なときの値
-#define	PlayerMax	(5)				// プレイヤー数の最大
+#define	PlayerMax	(8)				// プレイヤー数の最大
 #define	StatusTop	(20)			// 情報領域の一番上の行番号
 #define	NoError		(0)				// 初期化成功
 #define	DxLibError		(-1)		// DXLibのエラー
@@ -88,9 +88,13 @@ static	void	showMessage		( char* );
 //---------------------------------------------------------
 //	迷路探索
 //---------------------------------------------------------
-//extern "C"	Funcs*	getDemo01Info	( void );// Test
-extern "C"	Funcs*	getDemo02Info	( void );// Test
-extern "C"	Funcs*	getGroup05Info	( void );// Test
+extern "C"	Funcs*	getGroup01Info	( void );
+extern "C"	Funcs*	getGroup02Info	( void );
+extern "C"	Funcs*	getGroup03Info	( void );
+extern "C"	Funcs*	getGroup04Info	( void );
+extern "C"	Funcs*	getGroup05Info	( void );
+extern "C"	Funcs*	getGroup06Info	( void );
+
 
 
 //=================================
@@ -393,9 +397,12 @@ static	void	showMap	( Map	info  )
 static	int	initPlayers	( void )
 {
 	int	i = 0;
-	//registerPlayer ( i++, getDemo01Info ( ) );
-	registerPlayer ( i++, getDemo02Info ( ) );
+	registerPlayer ( i++, getGroup01Info ( ) );
+	registerPlayer ( i++, getGroup02Info ( ) );
+	registerPlayer ( i++, getGroup03Info ( ) );
+	registerPlayer ( i++, getGroup04Info ( ) );
 	registerPlayer ( i++, getGroup05Info ( ) );
+	registerPlayer ( i++, getGroup06Info ( ) );
 	return	i;
 }
 

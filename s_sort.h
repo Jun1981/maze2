@@ -1,6 +1,6 @@
 
 #pragma once
-#include "shinnenn.h"
+
 
 typedef struct {
 	int sortdir[4];

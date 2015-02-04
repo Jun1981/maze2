@@ -12,7 +12,7 @@
 //=================================
 // $B%W%l!<%d>pJs(B
 //=================================
-static	Funcs funcs = { "ê[ï£ÅiÇíÇô", init, walkAround };
+static	Funcs funcs = { "$B?<J%!J#r#y(B", init, walkAround };
 //=================================
 // $B8x3+4X?t(B
 //=================================
@@ -37,10 +37,8 @@ static int	walkAround(void){
 
 
 	
-		//x_size = 50; y_size = 30;	
+		x_size = 50; y_size = 30;	
 		//x_size = 20, y_size = 20;
-		x_size = getMazeWidth;
-		y_size = getMazeHeight;
 	
 
 	if (once == 0){

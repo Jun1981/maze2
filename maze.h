@@ -56,9 +56,8 @@ typedef	struct	{
 	static	void	init	( void );
 	static	int		walkAround	( void );
 #else
-	#define	Extern	extern "C"
+	#define	Extern	extern "C" 
 #endif
-
 
 //=================================
 //	公開関数のプロトタイプ宣言

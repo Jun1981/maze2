@@ -54,3 +54,4 @@ typedef struct MAP{
 extern mp m;
 
 extern int x_size, y_size;
+extern int self_chk;//自分のマップ確認用

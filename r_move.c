@@ -78,6 +78,25 @@ void r_move(void){
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ğ•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x + 1][m.now.y] = 1000; }
 
+
+		if (self_chk == 1)
+			if (m.cnt[2][12] = 1000){
+				self_chk = 2;
+				m.dir = m.mv = DirDown;
+				break;
+
+			}
+
+		if (self_chk == 3){
+
+			m.dir = m.mv = DirRight;
+			break;
+
+
+		}
+
+
+
 		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
 		if (kabegiwa() != -1){
 			m.dir = m.mv = kabegiwa(); break;
@@ -112,6 +131,26 @@ void r_move(void){
 
 		break;
 	case 2://‰º
+
+
+
+
+		if (self_chk == 2){
+
+			if (m.now.x = 1 && m.now.y == 15){
+				self_chk = 3;
+				m.dir = m.mv = DirRight;
+			}
+			else
+				m.dir = m.mv = DirDown;
+				break;
+
+		}
+
+
+
+
+
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ğ•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x][m.now.y + 1] = 1000; }
 

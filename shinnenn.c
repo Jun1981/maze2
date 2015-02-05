@@ -22,6 +22,7 @@ Funcs* getGroup05Info(void) { return &funcs; }
 
 int x_size, y_size;
 
+int self_chk= 0;//©•ª‚Ìƒ}ƒbƒvƒ`ƒFƒbƒN—p
 
 
 
@@ -68,6 +69,9 @@ static void init(void){
 
 	}
 	m.now = getCurrentPosition();
+
+	if (m.now.x == 0 && m.now.y == 12)self_chk++;//©ŒÈƒ}ƒbƒv‘æˆêğŒŠm”F
+
 	m.cnt[m.now.x][m.now.y] = 1000;
 	m.stat[m.now.x][m.now.y] = wall;//$BJI(B
 	m.old.x = m.now.x, m.old.y = m.now.y;

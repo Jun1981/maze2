@@ -8,7 +8,8 @@
 //=================================
 #include "shinnenn.h"
 #include "maze.h"
-#include "move.h"
+//#include "move.h"
+#include "r_move.h"
 //=================================
 // $B%W%l!<%d>pJs(B
 //=================================
@@ -39,22 +40,33 @@ static int	walkAround(void){
 	
 		//x_size = 50; y_size = 30;	
 		//x_size = 20, y_size = 20;
-		x_size = getMazeWidth;
-		y_size = getMazeHeight;
+		x_size = getMazeWidth();
+		y_size = getMazeHeight();
 	
 
 	if (once == 0){
 		init();
 		once = 1;
 		return m.mv;
-	}//$B:G=i$N%A%'%C%/(B
-	move();//$B0\F07W;;(B
-	//DrawFormatString(300, 300, "$B%+%&%s%H(B", m.cnt[1][20]);
+	}
+	r_move();	
 	return m.mv;
 }
 
 
 static void init(void){
+
+	int i, j;
+
+	//ƒ}ƒbƒvƒJƒEƒ“ƒ^‚ðƒŠƒZƒbƒg
+	for (i = 0; i < 50; i++){
+		for (j = 0; j < 30; j++){
+			m.cnt[i][j] = 0;
+		}
+
+
+
+	}
 	m.now = getCurrentPosition();
 	m.cnt[m.now.x][m.now.y] = 1000;
 	m.stat[m.now.x][m.now.y] = wall;//$BJI(B

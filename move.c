@@ -3,208 +3,146 @@
 #include "move.h"
 #include "s_sort.h"
 #include <stdlib.h>//qsort$BMQ(B
+
+
+
+int t_cnt[4] = { 0 };//àÍéûÉJÉEÉìÉg
+
+
 void move(void);
 int mv_chk(mp* x);//$B<~0O$NDL9T2s?t$r%A%'%C%/$70lHV>/$J$$J}8~$XJV$9!J>e#0!$1&#1!$2<#2!":8#3!K(B
 static int dirsort(void);//$B<~0O$NDL9T2s?t%A%'%C%/$7$F0lHV>/$J$$J}8~$rJV$9(B
 void move(void){
 	int same;
-	m.cnt[m.now.x][m.now.y]++; //$B:BI8$NDL$C$?2s?t$r!\#1(B
+	
 	//if (m.cnt[m.now.x][m.now.y] == 6){
 	// m.cnt[m.now.x][m.now.y] = 1000; //$BJI(B
 	//}
 	m.now = getCurrentPosition();//$B8=:_0LCV$r<hF@(B
 	same = mv_chk(&m);
 
+	
+	if(same!=1)m.cnt[m.now.x][m.now.y]++; //åªç›à íuÉJÉEÉìÉg
 
 	
 		switch (m.dir){
 		case 0://è„
 
-			if (m.now.y == 1){//è„í[
-				if (canMove(DirUp) == MapGoal){
-					m.mv = DirUp; return;
-				}
-				else{
-					m.cnt[m.now.x][m.now.y - 1] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-			}
+			//ëOÇ∆ç¿ïWÇ™ïœÇÌÇ¡ÇƒÇ»Ç©Ç¡ÇΩÇÁàÍï‡ëOÇï«Ç∆Ç∑ÇÈ
+			if (same == 1){ m.cnt[m.now.x][m.now.y - 1] = 1000; }
 
-			if (m.now.x == 1){//ç∂í[
-				if (canMove(DirLeft) == MapGoal){					
-					m.mv = DirLeft;
-					return;
 
-				}
-				else{
-					m.cnt[m.now.x - 1][m.now.y] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-			}
+			if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] > 3000)
+				m.cnt[m.now.x][m.now.y] = 1000;
 
-			if (m.now.x == x_size-2){//âEí[
-				if (canMove(DirRight) == MapGoal){
-					m.mv = DirRight;
-					return;
-				}
-				else{
-					m.cnt[m.now.x + 1][m.now.y] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
+			
+			//è„Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
+			//ç∂Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
+			//âEÇ™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
+			//â∫Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
 
-			}
+			m.dir = m.mv = dirsort();
 
 
 
 
-			if (same == 1){
-				m.cnt[m.now.x][m.now.y - 1] = 1000;//$BJI(B
-				m.stat[m.now.x][m.now.y - 1] = wall;
-			}
+			
+			//ëOÇRï˚å¸ÇÃâÒêîÇÉ`ÉFÉbÉNÇµÇƒàÍî‘è≠Ç»Ç¢ï˚Çå¸Ç≠(êiçsï˚å¸óDêÊÅj
+
+
+
+		
 			break;
-		case 1://âE
+		case 1://âE		
+			//ëOÇ∆ç¿ïWÇ™ïœÇÌÇ¡ÇƒÇ»Ç©Ç¡ÇΩÇÁàÍï‡ëOÇï«Ç∆Ç∑ÇÈ
+			if (same == 1){ m.cnt[m.now.x + 1][m.now.y] = 1000; }
 
-			if (m.now.x == x_size - 2){//âEí[
-				if (canMove(DirRight) == MapGoal){
-					m.mv = DirRight; return;
-				}else{
-					m.cnt[m.now.x + 1][m.now.y] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-			}
+			if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] > 3000)
+				m.cnt[m.now.x][m.now.y] = 1000;
 
 
+			//âEÇ™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
+			//è„Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
+			//â∫Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
+			//ç∂Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
 
-			//ï«ç€ÇÃÉSÅ[ÉãämîF
-			if (m.now.y == 1){//âEå¸Ç´ÇÃè„
-				if (canMove(DirUp) == MapGoal){
-					m.mv = DirUp;
-					return;
-				}
-				else
-				{
-					m.cnt[m.now.x ][m.now.y-1] = 1000;//ï«
-				//	m.cnt[m.now.x][m.now.y] += 3;
-				}
 
-			}
-			if (m.now.y == y_size - 2){//âEå¸Ç´ÇÃâ∫
-				if (canMove(DirDown) == MapGoal){
-					m.mv = DirDown;
-					return;
-				}
-				else{
-					m.cnt[m.now.x][m.now.y + 1] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-
-			}
-			//////////////////////////////////////////
+			m.dir = m.mv = dirsort();
 
 
 
+			
 
 
-
-
-
-
-			if (same == 1){
-				m.cnt[m.now.x + 1][m.now.y] = 1000;//$BJI(B
-				m.stat[m.now.x + 1][m.now.y] = wall;
-			}
+			
+		
 			break;
 		case 2://â∫
+			//ëOÇ∆ç¿ïWÇ™ïœÇÌÇ¡ÇƒÇ»Ç©Ç¡ÇΩÇÁàÍï‡ëOÇï«Ç∆Ç∑ÇÈ
+			if (same == 1){ m.cnt[m.now.x][m.now.y + 1] = 1000; }
 
-			if (m.now.y == y_size - 2){//â∫å¸Ç´Å@â∫í[
-				if (canMove(DirDown) == MapGoal){
-					m.mv = DirDown; return;
-				}
-				else{
-					m.cnt[m.now.x][m.now.y + 1] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-			}
+			if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] > 3000)
+				m.cnt[m.now.x][m.now.y] = 1000;
+		
+		
+			//â∫Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
+			//âEÇ™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
+			//ç∂Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
+			//è„Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
 
+			m.dir = m.mv = dirsort();
 
-
-
-
-			//ï«ç€ÇÃÉSÅ[ÉãämîF
-			if (m.now.x == 1){//â∫å¸Ç´ç∂í[
-				if (canMove(DirLeft) == MapGoal){
-					m.mv = DirLeft;
-					return;
-				}
-				else
-				{
-					m.cnt[m.now.x-1][m.now.y ] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
-			}
+			
 
 
-			if (m.now.x == x_size - 2){//â∫å¸Ç´âEí[
-				if (canMove(DirRight) == MapGoal){
-					m.mv = DirRight;
-					return;
-				}
-				else{
-					//m.cnt[m.now.x][m.now.y] += 3;
-					m.cnt[m.now.x + 1][m.now.y] = 1000;//ï«
-				}
-			}
-			//////////////////////////////////////////
 
-			if (same == 1){
-				m.cnt[m.now.x][m.now.y + 1] = 1000;//$BJI(B
-				m.stat[m.now.x][m.now.y + 1] = wall;
-			}
+
+
+
+			
 			break;
 		case 3://ç∂
 
 
-			if (m.now.x ==1 )//ç∂å¸Ç´ç∂í[
-				if (canMove(DirLeft) == MapGoal){
-					m.mv = DirLeft; return;
-				}
-				else{
-					m.cnt[m.now.x - 1][m.now.y] = 1000;//ï«
-					//m.cnt[m.now.x][m.now.y] += 3;
-				}
+			//ëOÇ∆ç¿ïWÇ™ïœÇÌÇ¡ÇƒÇ»Ç©Ç¡ÇΩÇÁàÍï‡ëOÇï«Ç∆Ç∑ÇÈ
+			if (same == 1){ m.cnt[m.now.x - 1][m.now.y] = 1000; }
 
-			//ï«ç€ÇÃÉSÅ[ÉãämîF
-			if (m.now.y == 1){//ç∂å¸Ç´è„í[
-				if (canMove(DirUp) == MapGoal){
-					m.mv = DirUp;
-					return;
-				}
-				else{
-				//	m.cnt[m.now.x][m.now.y] += 3;
-					m.cnt[m.now.x][m.now.y - 1] = 1000;//ï«
-				}
+			if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] > 3000)
+				m.cnt[m.now.x][m.now.y] = 1000;
 
-			}
-			if (m.now.y == y_size - 2){//ç∂å¸Ç´â∫í[
-				if (canMove(DirDown) == MapGoal){
-					m.mv = DirDown;
-					return;
-				}
-				else{
-					//m.cnt[m.now.x][m.now.y] += 3;
-					m.cnt[m.now.x][m.now.y + 1] = 1000;//ï«
-				}
-			}
-			//////////////////////////////////////////
-			if (same == 1){
-				m.cnt[m.now.x - 1][m.now.y] = 1000;//$BJI(B
-				m.stat[m.now.x - 1][m.now.y] = wall;
-			}
+			
+			//ç∂Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
+			//â∫Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
+			//è„Ç™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
+
+			//âEÇ™ÇOÇæÇ¡ÇΩÇÁêiÇﬁ
+			if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
+
+			m.dir = m.mv = dirsort();
+
+
+
+
 			break;
 		}
 	
-	//m.dir=m.mv=dirsort();
-	m.dir = m.mv = dirsort();
+       
+	//m.dir = m.mv = dirsort();
 	m.old.x = m.now.x; m.old.y = m.now.y;
 }
 //$BA0$HF1$8$@$C$?$i#1$r$=$l0J30$O#0$rJV$9(B
@@ -219,61 +157,116 @@ static int dirsort(void){
 	tmp *pt;
 	pt = &_t;
 
+	
+
 	//éûåvâÒÇË
 	switch (m.dir){
-	case 0://$B>e(B
-		_t.sortcnt[0] = m.cnt[m.now.x - 1][m.now.y];//Left		
-		_t.sortdir[0] = 3;
+	case 0://è„
+		
 
-		_t.sortcnt[1] = m.cnt[m.now.x][m.now.y - 1];//Up  
-		_t.sortdir[1] = 0;
 
-		_t.sortcnt[2] = m.cnt[m.now.x + 1][m.now.y];//Right
+		_t.sortcnt[0] = t_cnt[0]=m.cnt[m.now.x][m.now.y - 1]  ;//Up  
+		_t.sortdir[0] = 0;
+		
+
+
+		_t.sortcnt[1] = t_cnt[3]=m.cnt[m.now.x - 1][m.now.y];//Left		
+		_t.sortdir[1] = 3;
+
+		_t.sortcnt[2] = t_cnt[1] = m.cnt[m.now.x + 1][m.now.y];//Right
 		_t.sortdir[2] = 1;
 
+		 _t.sortcnt[3] = t_cnt[2] = m.cnt[m.now.x][m.now.y + 1];//Down
+		 _t.sortdir[3] = 2;
+		 
+		s_sort(&_t, 0, 3);
+		//s_sort(&_t, 0, 2);
 
-		//_t.sortcnt[3] = m.cnt[m.now.x][m.now.y + 1];//Down
-		//_t.sortdir[3] = 2;
-		//pntsort(&t);
+		if (_t.sortcnt[0] == t_cnt[0])_t.sortdir[0] = 0;
+		else 	if (_t.sortcnt[0] == t_cnt[3])_t.sortdir[0] = 3;
+		else 	if (_t.sortcnt[0] == t_cnt[1])_t.sortdir[0] = 1;
+		else 	if (_t.sortcnt[0] == t_cnt[2])_t.sortdir[0] = 2;
+	
+
+
+
 		break;
 	case 1://Right
 
-		_t.sortcnt[0] = m.cnt[m.now.x][m.now.y - 1];//Up
-		_t.sortdir[0] = 0;
-		_t.sortcnt[1] = m.cnt[m.now.x + 1][m.now.y];//Right
-		_t.sortdir[1] = 1;
-		_t.sortcnt[2] = m.cnt[m.now.x][m.now.y + 1];//Down
-		_t.sortdir[2] = 2;
-		
-		//_t.sortcnt[3] = m.cnt[m.now.x - 1][m.now.y];//Left
-		//_t.sortdir[3] = 3;
-		//pntsort(&t);
-		break;
-	case 2://Down
-		_t.sortcnt[0] = m.cnt[m.now.x + 1][m.now.y];//$B0l8D1&$N%+%&%s%H(B
+		_t.sortcnt[0] = t_cnt[1]= m.cnt[m.now.x + 1][m.now.y]  ;//Right
 		_t.sortdir[0] = 1;
-
-		_t.sortcnt[1] = m.cnt[m.now.x][m.now.y + 1];//Down
-		_t.sortdir[1] = 2;
-		_t.sortcnt[2] = m.cnt[m.now.x - 1][m.now.y];//Left
-		_t.sortdir[2] = 3;
+		_t.sortcnt[1] = t_cnt[0] = m.cnt[m.now.x][m.now.y - 1];//Up
+		_t.sortdir[1] = 0;
 		
-		//_t.sortcnt[3] = m.cnt[m.now.x][m.now.y - 1];//Up
-		//_t.sortdir[3] = 0;
+		_t.sortcnt[2] = t_cnt[2] = m.cnt[m.now.x][m.now.y + 1];//Down
+		_t.sortdir[2] = 2;
+
+		_t.sortcnt[3] = t_cnt[3] = m.cnt[m.now.x - 1][m.now.y];//Left
+		_t.sortdir[3] = 3;
+		//
+		s_sort(&_t, 0, 3);
+		//s_sort(&_t, 0, 2);
+
+		if ( _t.sortcnt[0] == t_cnt[1])_t.sortdir[0] = 1;
+		else if (_t.sortcnt[0] == t_cnt[0])_t.sortdir[0] = 0;
+		else 	if (_t.sortcnt[0] == t_cnt[2])_t.sortdir[0] = 2;		
+		else 	if (_t.sortcnt[0] == t_cnt[3])_t.sortdir[0] = 3;
+		
+		
+
+
+		
+		break;
+
+	case 2://Down
+		_t.sortcnt[0] = t_cnt[2]= m.cnt[m.now.x][m.now.y + 1] ;//Down
+		_t.sortdir[0] = 2;
+		_t.sortcnt[1] = t_cnt[1] = m.cnt[m.now.x + 1][m.now.y];//Right
+		_t.sortdir[1] = 1;
+
+	
+		_t.sortcnt[2] = t_cnt[3] = m.cnt[m.now.x - 1][m.now.y];//Left
+		_t.sortdir[2] = 3;
+
+		_t.sortcnt[3] = t_cnt[0] = m.cnt[m.now.x][m.now.y - 1];//Up
+		 _t.sortdir[3] = 0;
+
+
+		s_sort(&_t, 0, 3);
+		//s_sort(&_t, 0, 2);
+
+		if (_t.sortcnt[0] == t_cnt[2])_t.sortdir[0] = 2;
+		else if (_t.sortcnt[0] == t_cnt[1])_t.sortdir[0] = 1;
+		else 	if (_t.sortcnt[0] == t_cnt[3])_t.sortdir[0] = 3;
+		else 	if (_t.sortcnt[0] == t_cnt[0])_t.sortdir[0] = 0;
+		
 		break;
 	case 3://Left
-		_t.sortcnt[0] = m.cnt[m.now.x][m.now.y + 1];//$B0l8D2<(B
-		_t.sortdir[0] = 2;
 
-		_t.sortcnt[1] = m.cnt[m.now.x - 1][m.now.y];//$B0l8D:8(B
-		_t.sortdir[1] = 3;
-		_t.sortcnt[2] = m.cnt[m.now.x][m.now.y - 1];//$B0l8D>e(B
-		_t.sortdir[2] = 0;
+		_t.sortcnt[0] = t_cnt[3]= m.cnt[m.now.x - 1][m.now.y] ;//Left       
+		_t.sortdir[0] = 3;
+		_t.sortcnt[1] = t_cnt[2] = m.cnt[m.now.x][m.now.y + 1];//Down        
+		_t.sortdir[1] = 2;
+
 		
-		//_t.sortcnt[3] = m.cnt[m.now.x + 1][m.now.y];//$B0l8D1&$N%+%&%s%H(B
-		//_t.sortdir[3] = 1;
+		_t.sortcnt[2] = t_cnt[0] = m.cnt[m.now.x][m.now.y - 1];//Up
+		_t.sortdir[2] = 0;
+
+		_t.sortcnt[3] = t_cnt[1] = m.cnt[m.now.x + 1][m.now.y];//Right
+		 _t.sortdir[3] = 1;
+		 
+
+		s_sort(&_t, 0, 3);
+		//s_sort(&_t, 0, 2);
+
+		if (_t.sortcnt[0] == t_cnt[3])_t.sortdir[0] = 3;
+		else if (_t.sortcnt[0] == t_cnt[2])_t.sortdir[0] = 2;
+		else 	if (_t.sortcnt[0] == t_cnt[0])_t.sortdir[0] = 0;
+		else 	if (_t.sortcnt[0] == t_cnt[1])_t.sortdir[0] = 1;
+
+		
+		
 		break;
 	}
-	s_sort(&_t, 0, 2);
 	return _t.sortdir[0];
 }

@@ -8,6 +8,8 @@
  
 #include "r_move.h"
 
+#include "kabegiwa.h"
+
 int t_cnt[4] = { 0 };//ˆêŽžƒJƒEƒ“ƒg
 
 
@@ -36,6 +38,13 @@ void r_move(void){
 
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ð•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x][m.now.y - 1] = 1000; }
+
+
+
+		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
+		if (kabegiwa() != -1){
+			m.dir = m.mv = kabegiwa(); break;
+		}
 
 
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
@@ -69,6 +78,13 @@ void r_move(void){
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ð•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x + 1][m.now.y] = 1000; }
 
+		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
+		if (kabegiwa() != -1){
+			m.dir = m.mv = kabegiwa(); break;
+		}
+
+
+
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
 
@@ -98,6 +114,12 @@ void r_move(void){
 	case 2://‰º
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ð•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x][m.now.y + 1] = 1000; }
+
+		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
+		if (kabegiwa() != -1){
+			m.dir = m.mv = kabegiwa(); break;
+		}
+
 
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
@@ -130,6 +152,12 @@ void r_move(void){
 
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ð•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x - 1][m.now.y] = 1000; }
+
+		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
+		if (kabegiwa() != -1){
+			m.dir = m.mv = kabegiwa(); break;
+		}
+
 		
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;

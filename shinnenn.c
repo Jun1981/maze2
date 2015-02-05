@@ -13,7 +13,7 @@
 //=================================
 // $B%W%l!<%d>pJs(B
 //=================================
-static	Funcs funcs = { "ê[ï£ÅiÇíÇô", init, walkAround };
+static	Funcs funcs = { "ê_ÅXÇÃóVÇ—", init, walkAround };
 //=================================
 // $B8x3+4X?t(B
 //=================================
@@ -71,12 +71,30 @@ static void init(void){
 	m.cnt[m.now.x][m.now.y] = 1000;
 	m.stat[m.now.x][m.now.y] = wall;//$BJI(B
 	m.old.x = m.now.x, m.old.y = m.now.y;
-	if (m.now.x == 0) m.mv = m.dir = DirRight;//$B%9%?!<%HCOE@$,:8C<$@$C$?$i(B
-	else
-		if (m.now.y == 0) m.dir = m.mv = DirDown;//$B>e%9%?!<%H(B
-		else
-			if (m.now.x == x_size - 1) m.dir = m.mv = DirLeft;//$B1&C<(B
-			else
-				if (m.now.y == y_size - 1)m.dir = m.mv = DirUp;//$B2<C<(B
+	if (m.now.x == 0){
+		
+	    if (canMove(DirDown) == MapGoal)m.mv = DirDown;
+		else if (canMove(DirUp) == MapGoal)m.mv = DirUp;
+		else m.mv = m.dir = DirRight;
+	}
 
+	if (m.now.y == 0)
+	if (canMove(DirRight) == MapGoal)m.mv = DirRight;
+		else if (canMove(DirLeft) == MapGoal)m.mv = DirLeft;
+		
+		else m.dir = m.mv = DirDown;//$B>e%9%?!<%H(B
+
+	if (m.now.x == x_size - 1) {
+		
+		if (canMove(DirDown) == MapGoal)m.mv = DirDown;
+		else if (canMove(DirUp) == MapGoal)m.mv = DirUp;
+		else m.dir = m.mv = DirLeft;//$B1&C<(B
+	}
+
+
+	if (m.now.y == y_size - 1){
+		if (canMove(DirRight) == MapGoal)m.mv = DirRight;
+		else if (canMove(DirLeft) == MapGoal)m.mv = DirLeft;
+		else  m.dir = m.mv = DirUp;//$B2<C<(B
+	}
 }

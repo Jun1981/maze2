@@ -9,7 +9,9 @@
 #include "shinnenn.h"
 #include "maze.h"
 //#include "move.h"
-#include "r_move.h"
+  #include "r_move.h"
+
+//#include "s_move.h"
 //=================================
 // $B%W%l!<%d>pJs(B
 //=================================
@@ -50,7 +52,9 @@ static int	walkAround(void){
 		once = 1;
 		return m.mv;
 	}
-	r_move();	
+	r_move();//‰E—Dæ
+	
+	
 	return m.mv;
 }
 
@@ -70,7 +74,7 @@ static void init(void){
 	}
 	m.now = getCurrentPosition();
 
-	if (m.now.x == 0 && m.now.y == 12)self_chk++;//©ŒÈƒ}ƒbƒv‘æˆêğŒŠm”F
+	if (m.now.x == 0 && m.now.y == 12)self_chk=1;//©ŒÈƒ}ƒbƒv‘æˆêğŒŠm”F
 
 	m.cnt[m.now.x][m.now.y] = 1000;
 	m.stat[m.now.x][m.now.y] = wall;//$BJI(B

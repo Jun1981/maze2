@@ -1,6 +1,6 @@
 #include "s_sort.h"
 #include "shinnenn.h"
-#include "move.h"
+
 
 
 //–ó‹µ‚É‰‚¶‚ÄŒ^‚ğ•ÏX‚·‚é

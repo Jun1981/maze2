@@ -1,7 +1,5 @@
 //Š®¬Œ`H
 
-//2015”N2Œ8“ú
-
 
 #include"maze.h"
 #include "shinnenn.h"
@@ -10,18 +8,12 @@
 #include <stdlib.h>//qsort$BMQ(B
 
 //#include "move.h"
-
+ 
 #include "r_move.h"
 
 #include "kabegiwa.h"
 
 int t_cnt[4] = { 0 };//ˆêƒJƒEƒ“ƒg
-
-static int old_dir;
-
-static int times = 0;
-
-static int stk_cnt[100][100] = { 0 };
 
 
 
@@ -40,27 +32,12 @@ void r_move(void){
 	m.now = getCurrentPosition();//$B8=:_0LCV$r<hF@(B
 	same = mv_chk(&m);
 
-	times++;//¡‰½è–Ú‚©
-
-	stk_cnt[m.now.x][m.now.y] = times;
-
 
 	m.cnt[m.now.x][m.now.y]++; //Œ»İˆÊ’uƒJƒEƒ“ƒg
 
 
 	switch (m.dir){
 	case 0://ã
-
-
-		/*if (self_chk == 4){
-			if (m.now.x == 4 && m.now.y == 12){
-				self_chk = 5;
-
-				old_dir = m.dir = m.mv = DirRight;
-
-				break;
-			}
-		}*/
 
 		//‘O‚ÆÀ•W‚ª•Ï‚í‚Á‚Ä‚È‚©‚Á‚½‚çˆê•à‘O‚ğ•Ç‚Æ‚·‚é
 		if (same == 1){ m.cnt[m.now.x][m.now.y - 1] = 1000; }
@@ -69,46 +46,26 @@ void r_move(void){
 
 		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
 		if (kabegiwa() != -1){
-			old_dir=m.dir=m.mv = kabegiwa(); break;
+			m.dir = m.mv = kabegiwa(); break;
 		}
 
 
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
 
-	
 
-
-
-
+		
 		//‰E‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 1;  break; }
-		
+		if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
 		//ã‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir=m.dir=m.mv = 0; break; }
-
-
-		//////*‰E‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç(ƒ‹[ƒ€’Eo—pj
-		if (m.cnt[m.now.x + 1][m.now.y] >= 1 && m.cnt[m.now.x + 1][m.now.y] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y - 1] > 0){
-			if (m.cnt[m.now.x + 1][m.now.y - 1] == 1000 && m.cnt[m.now.x + 1][m.now.y + 1] == 1000){
-				old_dir = m.dir = m.mv = 1; break;
-			}
-		}
-		////////¶ã‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚çi‚Ş
-		if (m.cnt[m.now.x - 1][m.now.y - 1] >= 1 && m.cnt[m.now.x - 1][m.now.y - 1] != 1000 && same == 1 && m.cnt[m.now.x + 1][m.now.y] > 0 && m.cnt[m.now.x ][m.now.y + 1] != 1000){
-			if (m.cnt[m.now.x - 2][m.now.y - 1] == 1000 && m.cnt[m.now.x ][m.now.y - 1] == 1000){
-				old_dir = m.dir = m.mv = 3; break;
-			}
-		}
+		if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
 		
-
-
 		//¶‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 3;  break; }
+		if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
 		//‰º‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir=m.dir=m.mv = 2;  break; }
+		if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
 
-		old_dir=m.dir=m.mv = dirsort();
+		m.dir = m.mv = dirsort();
 
 
 
@@ -125,50 +82,27 @@ void r_move(void){
 		if (same == 1){ m.cnt[m.now.x + 1][m.now.y] = 1000; }
 
 
-		/*if (self_chk == 1){
-
-			if (m.now.x == 1 && m.now.y == 12){
-				if (canMove(DirRight) == MapAisle)
-					old_dir = m.dir = m.mv = DirRight;
+		if (self_chk == 1)
+			if (m.cnt[2][12] = 1000){
+				self_chk = 2;
+				m.dir = m.mv = DirDown;
 				break;
+
 			}
 
-
-			if (m.now.x==2 && m.now.y==12){
-
-				if (canMove(DirRight) == MapWall){
-					self_chk = 2;
-					old_dir = m.dir = m.mv = DirDown;
-					break;
-				}
-			}else
-				old_dir = m.dir = m.mv = DirRight;
-			break;
-		}
-
 		if (self_chk == 3){
-			if (m.now.x==4&& m.now.y==13){
-				self_chk = 4;
-				old_dir = m.dir = m.mv = DirUp;
 
-				break;
-
-
-			}else
-				old_dir = m.dir = m.mv = DirRight;
-
-		}
-		if (self_chk == 5){
-			old_dir = m.dir = m.mv = DirRight;
+			m.dir = m.mv = DirRight;
 			break;
 
-		}*/
+
+		}
 
 
 
 		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
 		if (kabegiwa() != -1){
-			old_dir=m.dir=m.mv = kabegiwa(); break;
+			m.dir = m.mv = kabegiwa(); break;
 		}
 
 
@@ -177,33 +111,19 @@ void r_move(void){
 			m.cnt[m.now.x][m.now.y] = 1000;
 
 
-
-		//‰º‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir=m.dir=m.mv = 2;  break; }
 		
+		//‰º‚ª‚O‚¾‚Á‚½‚çi‚Ş
+		if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
 		//‰E‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 1;  break; }
-
-		//////*‰º‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç
-		if (m.cnt[m.now.x][m.now.y + 1] >= 1 && m.cnt[m.now.x][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x + 1][m.now.y] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y + 1] == 1000 && m.cnt[m.now.x + 1][m.now.y + 1] == 1000){
-				old_dir = m.dir = m.mv = 2; break;
-			}
-		}
-		//////*‰Eã‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç(ƒ‹[ƒ€’Eo—pj
-		if (m.cnt[m.now.x + 1][m.now.y - 1] >= 1 && m.cnt[m.now.x + 1][m.now.y - 1] != 1000 && same == 1 && m.cnt[m.now.x][m.now.y + 1] > 0 && m.cnt[m.now.x-1][m.now.y ] != 1000){
-			if (m.cnt[m.now.x + 1][m.now.y ] == 1000 && m.cnt[m.now.x + 1][m.now.y -2] == 1000){
-				old_dir = m.dir = m.mv = 0; break;
-			}
-		}
-
+		if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
+		
 		//ã‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir=m.dir=m.mv = 0; break; }
+		if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
 		//¶‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 3;  break; }
+		if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
 
 
-		old_dir=m.dir=m.mv = dirsort();
+		m.dir = m.mv = dirsort();
 
 
 
@@ -218,16 +138,18 @@ void r_move(void){
 
 
 
-		/*if (self_chk == 2){
-			if (m.now.x == 2 && m.now.y == 13){
+		if (self_chk == 2){
+
+			if (m.now.x = 1 && m.now.y == 15){
 				self_chk = 3;
-				old_dir = m.dir = m.mv = DirRight;
-				break;
+				m.dir = m.mv = DirRight;
 			}
-			
-			
+			else
+				m.dir = m.mv = DirDown;
+				break;
+
 		}
-*/
+
 
 
 
@@ -237,7 +159,7 @@ void r_move(void){
 
 		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
 		if (kabegiwa() != -1){
-			old_dir=m.dir=m.mv = kabegiwa(); break;
+			m.dir = m.mv = kabegiwa(); break;
 		}
 
 
@@ -245,31 +167,18 @@ void r_move(void){
 			m.cnt[m.now.x][m.now.y] = 1000;
 
 
-
-		//¶‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 3;  break; }
 		
+		//¶‚ª‚O‚¾‚Á‚½‚çi‚Ş
+		if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
 		//‰º‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir=m.dir=m.mv = 2;  break; }
-
-		////*¶‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç(ƒ‹[ƒ€’Eo—pj
-		if (m.cnt[m.now.x - 1][m.now.y] >= 1 && m.cnt[m.now.x - 1][m.now.y] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y + 1] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y - 1] == 1000 && m.cnt[m.now.x - 1][m.now.y + 1] == 1000){
-				old_dir = m.dir = m.mv = 3; break;
-			}
-		}
-		////‰E‰º‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç
-		if (m.cnt[m.now.x + 1][m.now.y + 1] >= 1 && m.cnt[m.now.x + 1][m.now.y + 1] != 1000 && same == 1 && m.cnt[m.now.x - 1][m.now.y] > 0 && m.cnt[m.now.x][m.now.y - 1] != 1000){
-			if (m.cnt[m.now.x ][m.now.y + 1] == 1000 && m.cnt[m.now.x + 2][m.now.y + 1] == 1000){
-				old_dir = m.dir = m.mv = 1; break;
-			}
-		}
+		if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
+		
 		//‰E‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 1;  break; }
+		if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
 		//ã‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir=m.dir=m.mv = 0; break; }
+		if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
 
-		old_dir=m.dir=m.mv = dirsort();
+		m.dir = m.mv = dirsort();
 
 
 
@@ -288,45 +197,27 @@ void r_move(void){
 
 		//•Ç‚Ì‹ß‚­‚ÅƒS[ƒ‹ƒ`ƒFƒbƒN
 		if (kabegiwa() != -1){
-			old_dir=m.dir=m.mv = kabegiwa(); break;
+			m.dir = m.mv = kabegiwa(); break;
 		}
 
-		//••½
+		
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
 
 
-
+	
 		//ã‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir=m.dir=m.mv = 0; break; }
-		
-
-		//////ã‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y - 1] >= 1 && m.cnt[m.now.x][m.now.y - 1] != 1000 && same != 1 && m.cnt[m.now.x - 1][m.now.y] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y - 1] == 1000 && m.cnt[m.now.x + 1][m.now.y - 1] == 1000){
-				old_dir = m.dir = m.mv = 0; break;
-			}
-		}
-		//////*¶‰º‚ª‚P‚Å•Ç‚ÉˆÍ‚Ü‚ê‚Ä‚½‚ç(ƒ‹[ƒ€’Eo—pj
-		if (m.cnt[m.now.x - 1][m.now.y + 1] >= 1 && m.cnt[m.now.x - 1][m.now.y + 1] != 1000 && same == 1 && m.cnt[m.now.x][m.now.y - 1] > 0 && m.cnt[m.now.x +1][m.now.y ] != 1000){
-			if (m.cnt[m.now.x - 1][m.now.y ] == 1000 && m.cnt[m.now.x - 1][m.now.y + 2] == 1000){
-				old_dir = m.dir = m.mv = 2; break;
-			}
-		}
-
-
+		if (m.cnt[m.now.x][m.now.y - 1] == 0){ m.dir = m.mv = 0; break; }
 		//¶‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 3;  break; }
-
-		
-
+		if (m.cnt[m.now.x - 1][m.now.y] == 0){ m.dir = m.mv = 3;  break; }
+	
 		//‰º‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir=m.dir=m.mv = 2;  break; }
+		if (m.cnt[m.now.x][m.now.y + 1] == 0){ m.dir = m.mv = 2;  break; }
 
 		//‰E‚ª‚O‚¾‚Á‚½‚çi‚Ş
-		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir=m.dir=m.mv = 1;  break; }
+		if (m.cnt[m.now.x + 1][m.now.y] == 0){ m.dir = m.mv = 1;  break; }
 
-		old_dir=m.dir=m.mv = dirsort();
+		m.dir = m.mv = dirsort();
 
 
 
@@ -335,7 +226,7 @@ void r_move(void){
 	}
 
 
-	//old_dir=m.dir=m.mv = dirsort();
+	//m.dir = m.mv = dirsort();
 	m.old.x = m.now.x; m.old.y = m.now.y;
 }
 //$BA0$HF1$8$@$C$?$i#1$r$=$l0J30$O#0$rJV$9(B
@@ -450,9 +341,6 @@ static int dirsort(void){
 
 		//s_sort(&_t, 0, 3);
 		s_sort(&_t, 0, 2);
-
-
-
 
 		if (_t.sortcnt[0] == t_cnt[0])_t.sortdir[0] = 0;
 		else if (_t.sortcnt[0] == t_cnt[3])_t.sortdir[0] = 3;

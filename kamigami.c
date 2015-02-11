@@ -169,10 +169,9 @@ void r_move(void){
 			old_dir = m.dir = m.mv = kabegiwa(); break;
 		}
 
-
+		//封鎖
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
-
 
 
 		//右が０だったら進む
@@ -180,11 +179,24 @@ void r_move(void){
 
 		//上が０だったら進む
 		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir = m.dir = m.mv = 0; break; }
+		
+		////上下が壁で左右が０以上
+		//if(m.cnt[m.now.x][m.now.y+1]==1000 && m.cnt[m.now.x][m.now.y-1]==1000 && m.cnt[m.now.x-1][m.now.y]>0 &&  m.cnt[m.now.x+1][m.now.y]>0){
+		//	old_dir = m.dir = m.mv = 3;
+		//	break;;
+
+		//}
+
+		
+
+
+
+		
 
 
 		//////*右が１で壁に囲まれてたら(ルーム脱出用）
 		if (m.cnt[m.now.x + 1][m.now.y] >= 1 && m.cnt[m.now.x + 1][m.now.y] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y - 1] > 0){
-			if (m.cnt[m.now.x + 1][m.now.y - 1] == 1000 && m.cnt[m.now.x + 1][m.now.y + 1] == 1000){
+			if (m.cnt[m.now.x + 1][m.now.y - 1]>0 && m.cnt[m.now.x + 1][m.now.y + 1] == 1000){
 				old_dir = m.dir = m.mv = 1; break;
 			}
 		}
@@ -196,7 +208,7 @@ void r_move(void){
 		}
 		//////*右上が１で壁に囲まれてたら(ルーム脱出用）
 		if (m.cnt[m.now.x + 1][m.now.y - 1] >= 1 && m.cnt[m.now.x + 1][m.now.y - 1] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y + 1] > 0 && m.cnt[m.now.x - 1][m.now.y] != 1000){
-			if (m.cnt[m.now.x + 1][m.now.y] == 1000 && m.cnt[m.now.x + 1][m.now.y - 2] == 1000){
+			if (m.cnt[m.now.x + 1][m.now.y] == 1000 && m.cnt[m.now.x + 1][m.now.y - 2] >0){
 				old_dir = m.dir = m.mv = 0; break;
 			}
 		}
@@ -278,34 +290,61 @@ void r_move(void){
 			old_dir = m.dir = m.mv = kabegiwa(); break;
 		}
 
-
-
+		
+		//封鎖
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
-
 
 
 		//下が０だったら進む
 		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir = m.dir = m.mv = 2;  break; }
 
-		//右が０だったら進む
-		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir = m.dir = m.mv = 1;  break; }
+		
 
+
+		////左右が壁で上下が０以上
+		//if(m.cnt[m.now.x-1][m.now.y]==1000 && m.cnt[m.now.x+1][m.now.y]==1000 && m.cnt[m.now.x][m.now.y-1]>0 &&  m.cnt[m.now.x][m.now.y+1]>0 && m.cnt[m.now.x][m.now.y-1]!=1000 &&  m.cnt[m.now.x][m.now.y+1]!=1000){
+		//	old_dir = m.dir = m.mv = 0;
+		//	break;
+
+		//}
+
+		//下が壁で左右が０位上
+
+		if(m.cnt[m.now.x][m.now.y+1]==1000 &&  m.cnt[m.now.x-1][m.now.y]>0 &&  m.cnt[m.now.x+1][m.now.y]>0 && m.cnt[m.now.x-1][m.now.y]!=1000 &&  m.cnt[m.now.x+1][m.now.y]!=1000){
+			old_dir = m.dir = m.mv = 1;
+			break;
+
+		}
+
+
+		
+
+
+
+		/////*右上が１で壁に囲まれてたら(ルーム脱出用）
+		if (m.cnt[m.now.x + 1][m.now.y - 1] >= 1 && m.cnt[m.now.x+1][m.now.y - 1] != 1000 && same == 1 && m.cnt[m.now.x][m.now.y + 1] > 0 && m.cnt[m.now.x - 1][m.now.y] != 1000){
+			if (m.cnt[m.now.x + 1][m.now.y] == 1000 && m.cnt[m.now.x + 1][m.now.y - 2] >0){
+				old_dir = m.dir = m.mv = 0; break;
+			}
+		}
+
+		
 		//////*下が１で壁に囲まれてたら
-		if (m.cnt[m.now.x][m.now.y + 1] >= 1 && m.cnt[m.now.x][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x + 1][m.now.y] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y + 1] == 1000 && m.cnt[m.now.x + 1][m.now.y + 1] == 1000){
+		if (m.cnt[m.now.x][m.now.y + 1] >= 1 && m.cnt[m.now.x][m.now.y + 1] != 1000 && same != 1 ){
+			if (m.cnt[m.now.x - 1][m.now.y + 1] == 1000 && m.cnt[m.now.x + 1][m.now.y + 1] >0){
 				old_dir = m.dir = m.mv = 2; break;
 			}
 		}
-		//////*右上が１で壁に囲まれてたら(ルーム脱出用）
-		if (m.cnt[m.now.x + 1][m.now.y - 1] >= 1 && m.cnt[m.now.x + 1][m.now.y - 1] != 1000 && same == 1 && m.cnt[m.now.x][m.now.y + 1] > 0 && m.cnt[m.now.x - 1][m.now.y] != 1000){
+		/////*左下が１で壁に囲まれてたら(ルーム脱出用）
+		if (m.cnt[m.now.x - 1][m.now.y + 1] >= 1 && m.cnt[m.now.x - 1][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y + 1] > 0 && m.cnt[m.now.x - 1][m.now.y] != 1000){
 			if (m.cnt[m.now.x + 1][m.now.y] == 1000 && m.cnt[m.now.x + 1][m.now.y - 2] == 1000){
 				old_dir = m.dir = m.mv = 0; break;
 			}
 		}
 		////右下が１で壁に囲まれてたら
-		if (m.cnt[m.now.x + 1][m.now.y + 1] >= 1 && m.cnt[m.now.x + 1][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x - 1][m.now.y] > 0 && m.cnt[m.now.x][m.now.y - 1] != 1000){
-			if (m.cnt[m.now.x][m.now.y + 1] == 1000 && m.cnt[m.now.x + 2][m.now.y + 1] == 1000){
+		if (m.cnt[m.now.x + 1][m.now.y + 1] >= 1 && m.cnt[m.now.x + 1][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x - 1][m.now.y] > 0 ){
+			if (m.cnt[m.now.x][m.now.y + 1] == 1000 && m.cnt[m.now.x + 2][m.now.y + 1] >0){
 				old_dir = m.dir = m.mv = 1; break;
 			}
 		}
@@ -317,6 +356,13 @@ void r_move(void){
 			}
 		}
 
+
+
+
+		
+
+		//右が０だったら進む
+		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir = m.dir = m.mv = 1;  break; }
 		//上が０だったら進む
 		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir = m.dir = m.mv = 0; break; }
 		//左が０だったら進む
@@ -355,6 +401,7 @@ void r_move(void){
 		}
 
 
+		//封鎖
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
 
@@ -363,12 +410,22 @@ void r_move(void){
 		//左が０だったら進む
 		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir = m.dir = m.mv = 3;  break; }
 
-		//下が０だったら進む
-		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir = m.dir = m.mv = 2;  break; }
+		
+		
+		////上下が壁で左右が０以上
+		//if(m.cnt[m.now.x][m.now.y+1]==1000 && m.cnt[m.now.x][m.now.y-1]==1000 && m.cnt[m.now.x-1][m.now.y]>0 &&  m.cnt[m.now.x+1][m.now.y]>0){
+		//	old_dir = m.dir = m.mv = 1;
+		//	break;;
+
+		//}
+		
+
+
+		
 
 		////*左が１で壁に囲まれてたら(ルーム脱出用）
 		if (m.cnt[m.now.x - 1][m.now.y] >= 1 && m.cnt[m.now.x - 1][m.now.y] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y + 1] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y - 1] == 1000 && m.cnt[m.now.x - 1][m.now.y + 1] == 1000){
+			if (m.cnt[m.now.x - 1][m.now.y - 1] == 1000 && m.cnt[m.now.x - 1][m.now.y + 1] >0){
 				old_dir = m.dir = m.mv = 3; break;
 			}
 		}
@@ -380,7 +437,7 @@ void r_move(void){
 		}
 		//////*左下が１で壁に囲まれてたら(ルーム脱出用）
 		if (m.cnt[m.now.x - 1][m.now.y + 1] >= 1 && m.cnt[m.now.x - 1][m.now.y + 1] != 1000 && same != 1 && m.cnt[m.now.x][m.now.y - 1] > 0 && m.cnt[m.now.x + 1][m.now.y] != 1000){
-			if (m.cnt[m.now.x - 1][m.now.y] == 1000 && m.cnt[m.now.x - 1][m.now.y + 2] == 1000){
+			if (m.cnt[m.now.x - 1][m.now.y] == 1000 && m.cnt[m.now.x - 1][m.now.y + 2] >0){
 				old_dir = m.dir = m.mv = 2; break;
 			}
 		}
@@ -392,6 +449,9 @@ void r_move(void){
 			}
 		}
 
+		//下が０だったら進む
+		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir = m.dir = m.mv = 2;  break; }
+		
 		//右が０だったら進む
 		if (m.cnt[m.now.x + 1][m.now.y] == 0){ old_dir = m.dir = m.mv = 1;  break; }
 		//上が０だったら進む
@@ -410,20 +470,34 @@ void r_move(void){
 		if (kabegiwa() != -1){
 			old_dir = m.dir = m.mv = kabegiwa(); break;
 		}
-
 		//封鎖
 		if (m.cnt[m.now.x - 1][m.now.y] + m.cnt[m.now.x + 1][m.now.y] + m.cnt[m.now.x][m.now.y - 1] + m.cnt[m.now.x][m.now.y + 1] >= 3000)
 			m.cnt[m.now.x][m.now.y] = 1000;
-
 
 
 		//上が０だったら進む
 		if (m.cnt[m.now.x][m.now.y - 1] == 0){ old_dir = m.dir = m.mv = 0; break; }
 
 
-		//////上が１で壁に囲まれてたら進む
-		if (m.cnt[m.now.x][m.now.y - 1] >= 1 && m.cnt[m.now.x][m.now.y - 1] != 1000 && same != 1 && m.cnt[m.now.x - 1][m.now.y] > 0){
-			if (m.cnt[m.now.x - 1][m.now.y - 1] == 1000 && m.cnt[m.now.x + 1][m.now.y - 1] == 1000){
+	
+
+
+
+	
+			
+		////左右が壁で上下が０以上
+		//if(m.cnt[m.now.x-1][m.now.y]==1000 && m.cnt[m.now.x+1][m.now.y]==1000 && m.cnt[m.now.x][m.now.y-1]>0 &&  m.cnt[m.now.x][m.now.y+1]>0){
+		//	old_dir = m.dir = m.mv = 2;
+		//	break;
+
+		//}
+
+		
+
+
+			//////上が１で壁に囲まれてたら進む
+		if (m.cnt[m.now.x][m.now.y - 1] >= 1 && m.cnt[m.now.x][m.now.y - 1] != 1000 && same != 1 ){
+			if (m.cnt[m.now.x - 1][m.now.y - 1] >0 && m.cnt[m.now.x + 1][m.now.y - 1] == 1000){
 				old_dir = m.dir = m.mv = 0; break;
 			}
 		}
@@ -436,7 +510,7 @@ void r_move(void){
 
 		////////左上が１で壁に囲まれてたら進む
 		if (m.cnt[m.now.x - 1][m.now.y - 1] >= 1 && m.cnt[m.now.x - 1][m.now.y - 1] != 1000 && same != 1 && m.cnt[m.now.x + 1][m.now.y] > 0 && m.cnt[m.now.x][m.now.y + 1] != 1000){
-			if (m.cnt[m.now.x - 2][m.now.y - 1] == 1000 && m.cnt[m.now.x][m.now.y - 1] == 1000){
+			if (m.cnt[m.now.x - 2][m.now.y - 1] >0 && m.cnt[m.now.x][m.now.y - 1] == 1000){
 				old_dir = m.dir = m.mv = 3; break;
 			}
 		}
@@ -451,11 +525,11 @@ void r_move(void){
 
 
 
-		//左が０だったら進む
+		
+
+
+			//左が０だったら進む
 		if (m.cnt[m.now.x - 1][m.now.y] == 0){ old_dir = m.dir = m.mv = 3;  break; }
-
-
-
 		//下が０だったら進む
 		if (m.cnt[m.now.x][m.now.y + 1] == 0){ old_dir = m.dir = m.mv = 2;  break; }
 
@@ -648,114 +722,157 @@ int kabegiwa(){
 	switch (m.dir){
 	case 0:
 		
+		if(m.now.y==1){//上端
 
-		if (m.now.x == 1){//左端
-			if (canMove(DirLeft) == MapGoal){
-				
-				return DirLeft;;
-
-			}
-			else{
-				m.cnt[m.now.x - 1][m.now.y] = 1000;//壁
-				//m.cnt[m.now.x][m.now.y] += 3;
-			}
-		}
-
-		if (m.now.x == x_size - 2){//右端
-			if (canMove(DirRight) == MapGoal){
-				
-				return DirRight;
-			}
-			else{
-				m.cnt[m.now.x + 1][m.now.y] = 1000;//壁
+				if(m.cnt[m.now.x][m.now.y-1]==1000){
 				return -1;
-				//m.cnt[m.now.x][m.now.y] += 3;
 			}
 
-		}
-		break;
 
-	case 1:
-		//壁際のゴール確認
-		if (m.now.y == 1){//右向きの上
-			if (canMove(DirUp) == MapGoal){
+			if (canMove(DirUp) == MapWall){
+				m.cnt[m.now.x][m.now.y-1] = 1000;//壁
+				return -1;
 				
+
+			}
+			else if(canMove(DirUp)==MapGoal){
 				return DirUp;
 			}
-			else
-			{
-				m.cnt[m.now.x][m.now.y - 1] = 1000;//壁
-				//	m.cnt[m.now.x][m.now.y] += 3;
-			}
+
 
 		}
-		if (m.now.y == y_size - 2){//右向きの下
-			if (canMove(DirDown) == MapGoal){
-				
-				return DirDown;
+
+		if (m.now.x == 1){//左端
+
+			if(m.cnt[m.now.x-1][m.now.y]==1000){
+				return -1;
 			}
-			else{
-				m.cnt[m.now.x][m.now.y + 1] = 1000;//壁
-				//m.cnt[m.now.x][m.now.y] += 3;
+			if (canMove(DirLeft) == MapWall){
+
+				m.cnt[m.now.x - 1][m.now.y] = 1000;//壁
+				return -1;
+				
+
+			}
+			else if(canMove(DirLeft)==MapGoal){
+				return DirLeft;
+			}
+		}
+
+		
+		break;
+
+	case 1://右
+		//壁際のゴール確認
+		if(m.now.x==x_size-2){//右向き
+
+			if(m.cnt[m.now.x+1][m.now.y]==1000){
 				return -1;
 			}
 
+
+			if (canMove(DirRight) == MapWall){
+				m.cnt[m.now.x+1][m.now.y] = 1000;//壁
+				return -1;
+				
+
+			}
+			else if(canMove(DirRight)==MapGoal){
+				return DirRight;
+			}
+
+
+		}
+
+		if (m.now.x == 1){//上端
+
+			if(m.cnt[m.now.x][m.now.y-1]==1000){
+				return -1;
+			}
+
+			if (canMove(DirUp) == MapWall){
+				m.cnt[m.now.x ][m.now.y-1] = 1000;//壁
+				return -1;				
+
+			}
+			else if(canMove(DirUp)==MapGoal){
+				return DirUp;
+			}
 		}
 		//////////////////////////////////////////
 		break;
-	case 2:
-		//壁際のゴール確認
-		if (m.now.x == 1){//下向き左端
-			if (canMove(DirLeft) == MapGoal){
-				
-				return DirLeft;
-			}
-			else
-			{
-				m.cnt[m.now.x - 1][m.now.y] = 1000;//壁
-				//m.cnt[m.now.x][m.now.y] += 3;
-			}
-		}
+	case 2://下
+			if(m.now.y==y_size-2){//下端
 
-
-		if (m.now.x == x_size - 2){//下向き右端
-			if (canMove(DirRight) == MapGoal){
-				
-				return DirRight;
-			}
-			else{
-				//m.cnt[m.now.x][m.now.y] += 3;
-				m.cnt[m.now.x + 1][m.now.y] = 1000;//壁
+					if(m.cnt[m.now.x][m.now.y+1]==1000){
 				return -1;
 			}
+
+			if (canMove(DirDown) == MapWall){
+				m.cnt[m.now.x][m.now.y+1] = 1000;//壁
+				return -1;
+			}
+			else if(canMove(DirDown)==MapGoal){
+				return DirDown;
+			}
 		}
+
+		if (m.now.x == x_size-2){//右端
+
+				if(m.cnt[m.now.x+1][m.now.y]==1000){
+				return -1;
+			}
+
+			if (canMove(DirRight) == MapWall){
+				m.cnt[m.now.x + 1][m.now.y] = 1000;//壁
+				return -1;
+				
+
+			}
+			else if(canMove(DirRight)==MapGoal){
+				return DirRight;
+			}
+		}
+
 		//////////////////////////////////////////
 		break;
 	case 3:
 
-		//壁際のゴール確認
-		if (m.now.y == 1){//左向き上端
-			if (canMove(DirUp) == MapGoal){
-			
-				return DirUp;
-			}
-			else{
-				//	m.cnt[m.now.x][m.now.y] += 3;
-				m.cnt[m.now.x][m.now.y - 1] = 1000;//壁
-			}
+	if(m.now.x==1){//左端
 
-		}
-		if (m.now.y == y_size - 2){//左向き下端
-			if (canMove(DirDown) == MapGoal){
-				
-				return DirDown;
-			}
-			else{
-				//m.cnt[m.now.x][m.now.y] += 3;
-				m.cnt[m.now.x][m.now.y + 1] = 1000;//壁
+			if(m.cnt[m.now.x-1][m.now.y]==1000){
 				return -1;
 			}
+
+			if (canMove(DirLeft) == MapWall){
+				m.cnt[m.now.x-1][m.now.y] = 1000;//壁
+				return -1;
+				
+
+			}
+			else if(canMove(DirLeft)==MapGoal){
+				return DirLeft;
+			}
+
+
 		}
+
+		if (m.now.y == y_size-2){//下端
+			if(m.cnt[m.now.x][m.now.y+1]==1000){
+				return -1;
+			}
+
+			if (canMove(DirDown) == MapWall){
+				m.cnt[m.now.x ][m.now.y+1] = 1000;//壁
+				return -1;				
+
+			}
+			else if(canMove(DirDown)==MapGoal){
+				return DirDown;
+			}
+		}
+		//////////////////////////////////////////
+		
 
 		break;
 	}
@@ -763,3 +880,126 @@ int kabegiwa(){
 
 	return -1;
 }
+
+
+//
+//int kabegiwa(){
+//
+//	switch (m.dir){
+//	case 0:
+//		
+//
+//		if (m.now.x == 1){//左端
+//			if (canMove(DirLeft) == MapGoal){
+//				
+//				return DirLeft;;
+//
+//			}
+//			else{
+//				m.cnt[m.now.x - 1][m.now.y] = 1000;//壁
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//			}
+//		}
+//
+//		if (m.now.x == x_size - 2){//右端
+//			if (canMove(DirRight) == MapGoal){
+//				
+//				return DirRight;
+//			}
+//			else{
+//				m.cnt[m.now.x + 1][m.now.y] = 1000;//壁
+//				return -1;
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//			}
+//
+//		}
+//		break;
+//
+//	case 1:
+//		//壁際のゴール確認
+//		if (m.now.y == 1){//右向きの上
+//			if (canMove(DirUp) == MapGoal){
+//				
+//				return DirUp;
+//			}
+//			else
+//			{
+//				m.cnt[m.now.x][m.now.y - 1] = 1000;//壁
+//				//	m.cnt[m.now.x][m.now.y] += 3;
+//			}
+//
+//		}
+//		if (m.now.y == y_size - 2){//右向きの下
+//			if (canMove(DirDown) == MapGoal){
+//				
+//				return DirDown;
+//			}
+//			else{
+//				m.cnt[m.now.x][m.now.y + 1] = 1000;//壁
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//				return -1;
+//			}
+//
+//		}
+//		//////////////////////////////////////////
+//		break;
+//	case 2:
+//		//壁際のゴール確認
+//		if (m.now.x == 1){//下向き左端
+//			if (canMove(DirLeft) == MapGoal){
+//				
+//				return DirLeft;
+//			}
+//			else
+//			{
+//				m.cnt[m.now.x - 1][m.now.y] = 1000;//壁
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//			}
+//		}
+//
+//
+//		if (m.now.x == x_size - 2){//下向き右端
+//			if (canMove(DirRight) == MapGoal){
+//				
+//				return DirRight;
+//			}
+//			else{
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//				m.cnt[m.now.x + 1][m.now.y] = 1000;//壁
+//				return -1;
+//			}
+//		}
+//		//////////////////////////////////////////
+//		break;
+//	case 3:
+//
+//		//壁際のゴール確認
+//		if (m.now.y == 1){//左向き上端
+//			if (canMove(DirUp) == MapGoal){
+//			
+//				return DirUp;
+//			}
+//			else{
+//				//	m.cnt[m.now.x][m.now.y] += 3;
+//				m.cnt[m.now.x][m.now.y - 1] = 1000;//壁
+//			}
+//
+//		}
+//		if (m.now.y == y_size - 2){//左向き下端
+//			if (canMove(DirDown) == MapGoal){
+//				
+//				return DirDown;
+//			}
+//			else{
+//				//m.cnt[m.now.x][m.now.y] += 3;
+//				m.cnt[m.now.x][m.now.y + 1] = 1000;//壁
+//				return -1;
+//			}
+//		}
+//
+//		break;
+//	}
+//
+//
+//	return -1;
+//}

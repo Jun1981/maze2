@@ -396,13 +396,14 @@ static	void	showMap	( Map	info  )
 //---------------------------------------------------------
 static	int	initPlayers	( void )
 {
-	int	i = 0;
-	registerPlayer ( i++, getGroup01Info ( ) );
+	int		i = 0;
+	/*registerPlayer ( i++, getGroup01Info ( ) );
 	registerPlayer ( i++, getGroup02Info ( ) );
 	registerPlayer ( i++, getGroup03Info ( ) );
-	registerPlayer ( i++, getGroup04Info ( ) );
+	registerPlayer ( i++, getGroup04Info ( ) );*/
 	registerPlayer ( i++, getGroup05Info ( ) );
-	registerPlayer ( i++, getGroup06Info ( ) );
+	//registerPlayer ( i++, getGroup06Info ( ) );
+
 	return	i;
 }
 

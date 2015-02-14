@@ -85,9 +85,43 @@ static void init(void){
 	//右手法
 	//LR=1;
 	//ランダム
-	srand( (unsigned)time(NULL) );
-	LR=rand()%2;//LRに０か１をいれる
+	//srand( (unsigned)time(NULL) );
+	//LR=rand()%2;//LRに０か１をいれる
 
+
+
+	if(m.now.x==0){//左端
+		if(m.now.y<=y_size/2){//上半分
+			LR=1;//右手法
+
+		}else{
+			LR=0;//左手法
+		}
+	}
+	if(m.now.x==y_size-1){//右端
+		if(m.now.y<=y_size/2){//上半分
+			LR=0;//左手法
+
+		}else{
+			LR=1;//右手法
+		}
+	}
+	if(m.now.y==0){//上端
+		if(m.now.x<=x_size/2){//左半分
+			LR=0;//右手法
+
+		}else{
+			LR=1;//左手法
+		}
+	}
+	if(m.now.y==y_size-1){//下端
+		if(m.now.x<=x_size/2){//左半分
+			LR=1;//右手法
+
+		}else{
+			LR=0;//左手法
+		}
+	}
 	//マップサイズ
 	x_size = getMazeWidth();
 	y_size = getMazeHeight();

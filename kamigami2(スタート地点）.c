@@ -18,11 +18,11 @@ static int once =0;//一回だけ用
 //static int kabe_flag=0;//kabegiwa()用
 
 //マップサイズ用
-static int	x_size=0;
-static int	y_size=0;
+static int	x_size;
+static int	y_size;
 
 //左右ランダム選択用
-static int LR=0;//０が左手１が右手
+static int LR;//０が左手１が右手
 
 
 
@@ -56,10 +56,8 @@ static int	walkAround(void){
 	if(once==0)	init();	//初期化（一回だけ）
 	
 
-
-
 	if(once==2){
-		maze_move(LR);//ランダム
+		maze_move(1);//ランダム
 
 	}
 
@@ -80,6 +78,20 @@ static int	walkAround(void){
 static void init(void){
 	int i, j;//ループ用
 
+
+	//マップサイズ
+	x_size = getMazeWidth();
+	y_size = getMazeHeight();
+	//////////////////////////
+
+	m.now = getCurrentPosition();//現在位置取得
+
+	//マップカウンタをリセット
+	for (i = 0; i < 100; i++)
+		for (j = 0; j < 100; j++)
+			m.wall[i][j] = 0;
+
+	m.old.x=m.old.y=-1;//前の位置を適当に
 	
 
 	//右手法
@@ -108,10 +120,10 @@ static void init(void){
 	}
 	if(m.now.y==0){//上端
 		if(m.now.x<=x_size/2){//左半分
-			LR=0;//右手法
+			LR=0;//左手法
 
 		}else{
-			LR=1;//左手法
+			LR=1;//右手法
 		}
 	}
 	if(m.now.y==y_size-1){//下端
@@ -122,27 +134,13 @@ static void init(void){
 			LR=0;//左手法
 		}
 	}
-	//マップサイズ
-	x_size = getMazeWidth();
-	y_size = getMazeHeight();
-	//////////////////////////
-
-	m.now = getCurrentPosition();//現在位置取得
-
-	//マップカウンタをリセット
-	for (i = 0; i < 100; i++)
-		for (j = 0; j < 100; j++)
-			m.wall[i][j] = 0;
-
-	m.old.x=m.old.y=-1;//前の位置を適当に
+	
 
 
 
 	once=1;
 
 }
-
-
 
 
 
@@ -161,9 +159,6 @@ static void maze_move(int lr){
 	if(m.now.x==m.old.x && m.now.y==m.old.y)same=1;		
 	else same=0;	
 
-
-
-
 	switch(m.now_dir){			
 	case 0://上向き
 		if(same==1&& m.wall[m.now.x][m.now.y-1]!=1000 && m.now.y!=0){
@@ -171,20 +166,11 @@ static void maze_move(int lr){
 			m.now_dir=m.prev_dir;
 			break;
 		}
-		m.prev_dir=m.now_dir;
-
-		
+		m.prev_dir=m.now_dir;		
 
 
 		//左手法
-		if(lr==0){			
-
-			
-			//	if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-			//	if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
-			//	//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-			//	
-			//	//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
+		if(lr==0){		
 
 			if(m.now.x==x_size-2 && m.wall[m.now.x+1][m.now.y]!=1000){//右端の時
 					tmp=canMove(1);
@@ -206,13 +192,6 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=3;break;}
 				if(tmp==MapWall){m.wall[m.now.x-1][m.now.y]=1000;}
 			}
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-				//if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-				//if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック				
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
-
-			
-
 
 			if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
 			if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
@@ -238,15 +217,7 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=2;break;}
 				if(tmp==MapWall){m.wall[m.now.x][m.now.y+1]=1000;}
 			}
-
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
-				//if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
-				//if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-				//
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-
-
-		
+								
 
 			if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
 			if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
@@ -262,12 +233,7 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=0;break;}
 				if(tmp==MapWall){m.wall[m.now.x][m.now.y-1]=1000;}
 			}
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
-				//if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック				
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-
-	
-
+				
 			if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
 			if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
 			if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
@@ -295,16 +261,7 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=3;break;}
 				if(tmp==MapWall){m.wall[m.now.x-11][m.now.y]=1000;}
 			}
-			//if(m.now.x==1 && m.wall[m.now.x-1][m.now.y]!=1000)//左端の時右手法に切り替える
-
-			//	if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-				//	if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
 			
-				//if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
-
-	
-
 
 			if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
 			if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
@@ -321,17 +278,7 @@ static void maze_move(int lr){
 				if(tmp==MapWall){m.wall[m.now.x-11][m.now.y]=1000;}
 			}
 
-			//if(m.now.x==x_size-2 && m.wall[m.now.x+1][m.now.y]!=1000)//右端の時左手法に切り替える
-
-
-			//	if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック			
-				//
-				//if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
-
-			
-
+		
 			if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
 			if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
 			if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
@@ -356,13 +303,7 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=0;break;}
 				if(tmp==MapWall){m.wall[m.now.x][m.now.y-1]=1000;}
 			}
-				//if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック				
-				//if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-
-
 			
-
 			if(m.wall[m.now.x][m.now.y+1]!=1000 &&  m.now.y!=y_size-1){m.now_dir=2;break;}//下チェック
 			if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
 			if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
@@ -377,11 +318,7 @@ static void maze_move(int lr){
 				if(tmp==MapGoal){m.now_dir=2;break;}
 				if(tmp==MapWall){m.wall[m.now.x][m.now.y+1]=1000;}
 			}
-				//if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
-				//if(m.wall[m.now.x-1][m.now.y]!=1000 &&  m.now.x!=0){m.now_dir=3;break;}//左チェック
-				//
-				//if(m.wall[m.now.x+1][m.now.y]!=1000 && m.now.x!=x_size-1) { m.now_dir=1;break; }//右チェック
-
+				
 	
 
 			if(m.wall[m.now.x][m.now.y-1]!=1000 &&  m.now.y!=0){m.now_dir=0;break;}//上チェック
